@@ -1,0 +1,140 @@
+#header{
+    width: 100%;
+    height: 270px;
+    border-bottom: solid;
+    display: inline-flex;
+}
+
+#main{
+    width: 100%;
+    height: 600px;
+}
+#footer{
+    background-color: #97C2FC;
+    width: 100%;
+    height: 50px;
+}
+
+html, body {
+    font: 11pt arial;
+}
+
+h1 {
+    font-size: 150%;
+    margin: 5px 0;
+}
+
+h2 {
+    font-size: 100%;
+    margin: 5px 0;
+}
+
+table.view {
+    width: 100%;
+}
+
+table td {
+    vertical-align: top;
+}
+
+table table {
+    background-color: #f5f5f5;
+    border: 1px solid #e5e5e5;
+}
+
+table table td {
+    vertical-align: middle;
+}
+
+input[type=text], pre {
+    border: 1px solid lightgray;
+}
+
+pre {
+    margin: 0;
+    padding: 5px;
+    font-size: 10pt;
+}
+
+#network {
+    width: 100%;
+    height: 400px;
+    border: 1px solid lightgray;
+}
+
+#edges-table{
+    margin-left: 30px;
+}
+#network{
+    margin-top: 150px;
+}
+
+body, select {
+    font: 10pt sans;
+}
+#mynetwork {
+    position:relative;
+    width: 800px;
+    height: 600px;
+    border: 1px solid lightgray;
+    float: left;
+}
+table.legend_table {
+    font-size: 11px;
+    border-width:1px;
+    border-color:#d3d3d3;
+    border-style:solid;
+}
+table.legend_table,td {
+    border-width:1px;
+    border-color:#d3d3d3;
+    border-style:solid;
+    padding: 2px;
+}
+div.table_content {
+    width:80px;
+    text-align:center;
+}
+div.table_description {
+    width:100px;
+}
+
+#operation {
+    font-size:28px;
+}
+#network-popUp {
+    display:none;
+    position:absolute;
+    top:350px;
+    left:170px;
+    z-index:299;
+    width:250px;
+    height:120px;
+    background-color: #f9f9f9;
+    border-style:solid;
+    border-width:3px;
+    border-color: #5394ed;
+    padding:10px;
+    text-align: center;
+}
+.edge-prop,.edge-prop-edit{
+    display: none;
+}
+#info{
+    width: 400px;
+    height: 400px;
+    margin-left: 820px;
+    border: 1px solid lightgray;
+    display: none;
+}
+#random-menu{
+    border: 2px solid lightgray;
+    width: 300px;
+    padding: 5px;
+}
+
+#algorithm-menu, #messages-menu{
+    border: 2px solid lightgray;
+    margin-left: 20px;
+    padding: 5px;
+}

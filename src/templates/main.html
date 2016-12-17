@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Course work</title>
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <script type="text/javascript" src="../js/vis.min.js"></script>
+    <link href="../css/vis.min.css" rel="stylesheet" type="text/css"/>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/network.js"></script>
+    <script type="text/javascript" src="../js/algorithm.js"></script>
+    <script type="text/javascript" src="../js/graph.js"></script>
+    <script type="text/javascript" src="../js/messages.js"></script>
+
+
+</head>
+<body onload="draw();">
+
+<div id="main-container">
+    <div id="header">
+        <div id="random-menu" >
+            <h4>Random menu</h4>
+            <p>Weight</p>  <input id="rand-weight-from" type="number" value="50"> -  <input id="rand-weight-to"type="number" value="100"><br/>
+            <p>Error Probability</p>  <input id="rand-error-from" type="number" value="0.1"> -  <input id="rand-error-to"type="number" value="0.2"><br/>
+
+            <button id="generateRandom" onclick="randomGraphGeneration();">Random graph</button>
+        </div>
+
+        <div id="algorithm-menu">
+            <h4>Shortest path menu</h4>
+            <p>From</p>  <input id="alg-from" type="number"> To  <input id="alg-to"type="number" ><br/>
+
+            <button id="startAlg" onclick="processShortestPath();">Start process</button>
+        </div>
+        <div id="messages-menu" >
+            <h4>Messages menu</h4>
+            <input type="radio" name="type" value="datagram"> Datagram<br>
+            <input type="radio" name="type" value="logic-link" checked> Logic link<br>
+            <p>Size</p> <input id="message-size" type="number" value="512"><br/>
+            <p>Count</p> <input id="message-count" type="number" value="1"><br/>
+            From <input id="send-from" type="number"> To  <input id="send-to"type="number"><br/>
+            <button id="processSending" onclick="send();">Send</button>
+        </div>
+
+    </div>
+
+    <div id="main">
+        <div id="network-popUp">
+            <span id="operation">node</span> <br>
+            <table style="margin:auto;">
+                <tr class="node-prop">
+                    <td>label</td>
+                    <td>
+                        <input id="node-label" value="new value" />
+                    </td>
+                </tr>
+                <tr class="edge-prop">
+                    <td>Satellite</td>
+                    <td>
+                        <input id="sat-inp" type="checkbox">
+                    </td>
+                </tr>
+                <tr class="edge-prop">
+                    <td>Error Probability</td>
+                    <td>
+                        <input id="error-probability">
+                    </td>
+                </tr>
+                <tr class="edge-prop">
+                    <td>Weight</td>
+                    <td>
+                        <input id="weight">
+                    </td>
+                </tr>
+                <tr class="edge-prop-edit">
+                    <td>Duplex</td>
+                    <td>
+                        <input id="isDupl" type="checkbox">
+                    </td>
+                </tr>
+                <tr class="edge-prop-edit">
+                    <td>Turned off</td>
+                    <td>
+                        <input id="isTurnedOff" type="checkbox">
+                    </td>
+                </tr>
+            </table>
+            <input type="button" value="save" id="saveButton" />
+            <input type="button" value="cancel" id="cancelButton" />
+        </div>
+        <br />
+        <div id="mynetwork"></div>
+        <div id="info">
+            <h3 id="info-title"></h3>
+            <div id="info-body"></div>
+        </div>
+    </div>
+
+    <div id="footer">
+
+
+    </div>
+
+    <dialog id="log-info">
+        <div id="log-body"></div><br/>
+        <button id="hide-dialog" onclick="hideDialog();">Close</button>
+    </dialog>
+
+</div>
+
+</body>
+
+
+</html>
