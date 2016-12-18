@@ -37,10 +37,13 @@
             <h4>Messages menu</h4>
             <input type="radio" name="type" value="datagram"> Datagram<br>
             <input type="radio" name="type" value="logic-link" checked> Logic link<br>
-            <p>Size</p> <input id="message-size" type="number" value="512"><br/>
+            <p>Size</p> <input id="message-size" type="number" value="10000"><br/>
             <p>Count</p> <input id="message-count" type="number" value="1"><br/>
             From <input id="send-from" type="number"> To  <input id="send-to"type="number"><br/>
             <button id="processSending" onclick="send();">Send</button>
+        </div>
+        <div id="log-menu">
+            <button id="showLog" onclick="showLog();">Show</button>
         </div>
 
     </div>
@@ -104,7 +107,7 @@
 
     <dialog id="log-info">
         <div id="log-body"></div><br/>
-        <button id="hide-dialog" onclick="hideDialog();">Close</button>
+        <button id="hide-dialog" onclick="hideLog();">Close</button>
     </dialog>
 
 </div>

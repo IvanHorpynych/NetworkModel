@@ -14,7 +14,7 @@ var newEdgeInd;
 
 var options = {
     physics:{
-        enabled: true
+        enabled: false
     },
     interaction:{
         hover:true,
@@ -147,15 +147,18 @@ function randomGraphGeneration() {
         do {
             from = getRandomInt(0, MIN_NODES-1);
             to = getRandomInt(0, MIN_NODES-1);
-        }while(from == to);
+        }while(from == to || isEdgeExist(from, to, data.edges));
+
+
 
         var w = getRandomInt(randParam.weightFrom, randParam.weightTo);
+        var error = getRandomFloat(errorFrom, errorTo);
         data.edges.push({
             id: newEdgeInd,
             from: from,
             to: to,
             weight: w,
-            error: getRandomFloat(errorFrom, errorTo),
+            error: error,
             sat_inp: isSat(),
             isDupl: isDupl(),
             label: w,
@@ -169,18 +172,27 @@ function randomGraphGeneration() {
     var container = document.getElementById('mynetwork');
     createNetwork(container);
 }
+function isEdgeExist(from, to, edges) {
+    for(var i = 0; i< edges.length; i++){
+        var e = edges[i];
+        if(e.to == to && e.from == from || e.to == from && e.from == to){
+            return true;
+        }
+    }
+    return false;
+}
 
 function isSat() {
     return false;
 }
 
 function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
+    min = Math.ceil(Number(min));
+    max = Math.floor(Number(max));
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 function getRandomFloat(min, max) {
-    return Math.random() * (max - min) + min
+    return Math.random() * (Number(max) - Number(min)) + Number(min)
 }
 
 
@@ -205,12 +217,13 @@ function getScaleFreeNetwork(nodeCount, randParam) {
             var from = i;
             var to = 0;
             var w = getRandomInt(randParam.weightFrom, randParam.weightTo);
+            var error = getRandomFloat(randParam.errorFrom, randParam.errorTo);
             edges.push({
                 id: newEdgeInd,
                 from: from,
                 to: to,
                 weight: w,
-                error: getRandomFloat(randParam.errorFrom, randParam.errorTo),
+                error: error,
                 sat_inp: isSat(),
                 isDupl: isDupl(),
                 label: w,
@@ -235,12 +248,13 @@ function getScaleFreeNetwork(nodeCount, randParam) {
             var from = i;
             var to = j;
             var w = getRandomInt(randParam.weightFrom, randParam.weightTo);
+            var error = getRandomFloat(randParam.errorFrom, randParam.errorTo);
             edges.push({
                 id: newEdgeInd,
                 from: from,
                 to: to,
                 weight: w,
-                error: getRandomFloat(randParam.errorFrom, randParam.errorTo),
+                error: error,
                 sat_inp: isSat(),
                 isDupl: isDupl(),
                 label: w,

@@ -10,7 +10,6 @@
     height: 600px;
 }
 #footer{
-    background-color: #97C2FC;
     width: 100%;
     height: 50px;
 }
@@ -137,4 +136,25 @@ div.table_description {
     border: 2px solid lightgray;
     margin-left: 20px;
     padding: 5px;
+}
+.red{
+    background-color: #ff9ca1;
+}
+.green{
+    background-color: greenyellow;
+}
+.yellow{
+    background-color: yellow;
+}
+
+
+
+#log-info{
+    /*display: block !important; !* I added this to see the modal, you don't need this *!*/
+    overflow-y: initial !important
+}
+
+#log-body{
+    height: 500px;
+    overflow-y: auto;
 }
