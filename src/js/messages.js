@@ -4,7 +4,7 @@
 var SERVICE_PART_SIZE = 128;
 var INFORM_PART_SIZE = 1000;
 var SERVICE_PACKET = 128;
-var MAX_CAPACITY = 80000;
+var MAX_CAPACITY = 20000;
 var STEP_CAPACITY = 50;
 var MIN_WEIGHT = 50;
 var packets;
@@ -50,7 +50,7 @@ function processDatagram(from, to, size, count) {
          setTimeoutFunction(i, bytesSum);
     }
 
-    showFinishMessage(from, to, bytesSum, timeSum.reduce(function(a, b) { return a + b; }, 0)/paths.length );
+    showFinishMessage(from, to, bytesSum, Math.round(timeSum.reduce(function(a, b) { return a + b; }, 0)/paths.length) );
 
 }
 

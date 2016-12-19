@@ -11,10 +11,11 @@ var networkDataEdges = null;
 
 var newNodeInd;
 var newEdgeInd;
+var regionNodeId = 0;
 
 var options = {
     physics:{
-        enabled: false
+        enabled: true
     },
     interaction:{
         hover:true,
@@ -127,9 +128,41 @@ function createNetwork(container) {
 
 }
 
+function correctData(d) {
+    d.nodes.forEach(function (n) {
+        n.id = regionNodeId++;
+    })
+    d.edges.forEach(function (e) {
+        e.to = d.nodes[e.to].id
+        e.from = d.nodes[e.from].id
+    })
+}
+function makeRouting() {
+    for(var i = 1; i< nodes.length; i++){
+        var nFrom = nodes[i];
+        for(var j = 1; j < nodes.length; j++){
+            if(i==j){
+                continue;
+            }
+            var nTo = nodes[j];
+            var path = getShortestPath(nFrom.id, nTo.id);
+            var eds = getEdgesForSending(path)
+            var sum = 0;
+            eds.forEach(function (e) {
+                sum += e.weight;
+            });
+            nFrom.routing.push({
+                to: nTo.id,
+                path: path,
+                weight: sum
+            });
+        }
+    }
+}
 function randomGraphGeneration() {
     newNodeInd = 0;
     newEdgeInd = 0;
+    regionNodeId = 0;
     var weightFrom = document.getElementById('rand-weight-from').value;
     var weightTo= document.getElementById('rand-weight-to').value;
     var errorFrom= document.getElementById('rand-error-from').value;
@@ -139,20 +172,83 @@ function randomGraphGeneration() {
         weightTo: weightTo,
         errorFrom: errorFrom,
         errorTo: errorTo
+    };
+    if(IS_REGIONAL){
+        var datas = [];
+        for(var i = 0; i < REGIONS_NUMBER; i++){
+            var d = getRandomGraph(MIN_NODES_IN_REGION, randParam);
+            correctData(d);
+            datas.push(d)
+        }
+        var n = {
+            id: newNodeInd,
+            label: String(newNodeInd),
+            children: [],
+            routing: []
+        };
+        newNodeInd++;
+
+        for(var i = 0; i < datas.length; i++){
+            var d = datas[i];
+            var from = n.id;
+            var to = d.nodes[getRandomInt(0, MIN_NODES_IN_REGION -1 )].id;
+            // var w = getRandomInt(randParam.weightFrom, randParam.weightTo);
+            var w = WEIGHT_ARRAY[getRandomInt(0, WEIGHT_ARRAY.length -1)];
+            var error = getRandomFloat(randParam.errorFrom, randParam.errorTo);
+            var e = {
+                id: newEdgeInd,
+                from: from,
+                to: to,
+                weight: w,
+                error: error,
+                sat_inp: true,
+                isDupl: isDupl(),
+                label: w,
+                font: {align: 'top'},
+                saved_weight: w
+            };
+            newEdgeInd++;
+            datas[datas.length-1].edges.push(e)
+        }
+        datas[REGIONS_NUMBER-1].nodes.push(n);
+        var data = {
+            edges: [],
+            nodes: []
+        }
+        datas.forEach(function (d) {
+            d.nodes.forEach(function (n) {
+                data.nodes.push(n);
+            });
+            d.edges.forEach(function (e) {
+                data.edges.push(e);
+            });
+        });
+
+    }else{
+        var data = getRandomGraph(MIN_NODES, randParam);
     }
-    var data = getScaleFreeNetwork(MIN_NODES, randParam);
-    for(var i = data.edges.length; i < MIN_NODES * AVERAGE_RANG - data.edges.length; i++){
+
+    edges = data.edges;
+    nodes = data.nodes;
+    makeRouting();
+    var container = document.getElementById('mynetwork');
+    createNetwork(container);
+}
+function getRandomGraph(minNodes, randParam) {
+    var data = getScaleFreeNetwork(minNodes, randParam);
+    for(var i = data.edges.length; i < minNodes * AVERAGE_RANG - data.edges.length; i++){
         var from = 0;
         var to = 0;
         do {
-            from = getRandomInt(0, MIN_NODES-1);
-            to = getRandomInt(0, MIN_NODES-1);
+            from = getRandomInt(0, minNodes-1);
+            to = getRandomInt(0, minNodes-1);
         }while(from == to || isEdgeExist(from, to, data.edges));
 
 
 
-        var w = getRandomInt(randParam.weightFrom, randParam.weightTo);
-        var error = getRandomFloat(errorFrom, errorTo);
+        // var w = getRandomInt(randParam.weightFrom, randParam.weightTo);
+        var w = WEIGHT_ARRAY[getRandomInt(0, WEIGHT_ARRAY.length -1)];
+        var error = getRandomFloat(randParam.errorFrom, randParam.errorTo);
         data.edges.push({
             id: newEdgeInd,
             from: from,
@@ -167,10 +263,7 @@ function randomGraphGeneration() {
         });
         newEdgeInd++;
     }
-    edges = data.edges;
-    nodes = data.nodes;
-    var container = document.getElementById('mynetwork');
-    createNetwork(container);
+    return data;
 }
 function isEdgeExist(from, to, edges) {
     for(var i = 0; i< edges.length; i++){
@@ -204,9 +297,10 @@ function getScaleFreeNetwork(nodeCount, randParam) {
     // randomly create some nodes and edges
     for (var i = 0; i < nodeCount; i++) {
         nodes.push({
-            id: i,
-            label: String(i),
-            children: []
+            id: newNodeInd,
+            label: String(newNodeInd),
+            children: [],
+            routing: []
         });
         newNodeInd++;
 
@@ -216,7 +310,9 @@ function getScaleFreeNetwork(nodeCount, randParam) {
         if (i == 1) {
             var from = i;
             var to = 0;
-            var w = getRandomInt(randParam.weightFrom, randParam.weightTo);
+            // var w = getRandomInt(randParam.weightFrom, randParam.weightTo);
+            var w = WEIGHT_ARRAY[getRandomInt(0, WEIGHT_ARRAY.length -1)];
+
             var error = getRandomFloat(randParam.errorFrom, randParam.errorTo);
             edges.push({
                 id: newEdgeInd,
@@ -247,7 +343,8 @@ function getScaleFreeNetwork(nodeCount, randParam) {
 
             var from = i;
             var to = j;
-            var w = getRandomInt(randParam.weightFrom, randParam.weightTo);
+            // var w = getRandomInt(randParam.weightFrom, randParam.weightTo);
+            var w = WEIGHT_ARRAY[getRandomInt(0, WEIGHT_ARRAY.length -1)];
             var error = getRandomFloat(randParam.errorFrom, randParam.errorTo);
             edges.push({
                 id: newEdgeInd,
@@ -308,7 +405,8 @@ function saveNode(data,callback) {
     nodes.push({
         id: id,
         label: label,
-        children: []
+        children: [],
+        routing: []
     });
     // networkDataNodes.add({id: id, label: label});
     clearPopUp();
@@ -401,9 +499,9 @@ function showNodeInfo(params) {
     p.innerHTML = "Routing: ";
     info.appendChild(p);
 
-    node.children.forEach(function (el) {
+    node.routing.forEach(function (el) {
         p =  document.createElement('p');
-        p.innerHTML = "" + el.p + " --> " + el.w;
+        p.innerHTML = "" + node.id + " --> " + el.to + " : " + JSON.stringify(el.path) + " min weight: " + el.weight;
         info.appendChild(p);
     });
 
@@ -438,13 +536,6 @@ function showEdgeInfo(params) {
     p.innerHTML = "Error Probability: " + edge.error;
     info.appendChild(p);
 
-    p = document.createElement('p');
-    p.innerHTML = "Is satellite: " + edge.sat_inp;
-    info.appendChild(p);
-
-    p = document.createElement('p');
-    p.innerHTML = "Is duplex: " + edge.isDupl;
-    info.appendChild(p);
 
 
     document.getElementById('info').style.display = 'block';

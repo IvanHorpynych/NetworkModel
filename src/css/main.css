@@ -158,3 +158,10 @@ div.table_description {
     height: 500px;
     overflow-y: auto;
 }
+#info-body{
+    height: 350px;
+    overflow-y: auto;
+}
+#info{
+    overflow-y: initial !important
+}
