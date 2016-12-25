@@ -2,7 +2,7 @@
  * Created by danastasiev on 12/10/16.
  */
 var SERVICE_PART_SIZE = 128;
-var INFORM_PART_SIZE = 1000;
+var INFORM_PART_SIZE = 1500;
 var SERVICE_PACKET = 128;
 var MAX_CAPACITY = 20000;
 var STEP_CAPACITY = 50;
@@ -12,6 +12,9 @@ var datagramEdges = [];
 var packetsAndPath = [];
 var packetId = 0;
 var timeSum = [];
+
+var intensity = 0;
+var INTENSITY_TIME = 1000;
 
 
 
@@ -26,6 +29,7 @@ function send() {
     document.getElementById("log-body").innerHTML = "";
     timeSum = [];
     packetId = 0;
+    intensity = 0;
 
     if(radios[0].checked){
         processDatagram(from, to, size, count);
@@ -57,7 +61,7 @@ function processDatagram(from, to, size, count) {
 function setTimeoutFunction(ind, bytesSum) {
     var ed = datagramEdges[ind];
     var path = packetsAndPath[ind].path;
-    bytesSum += process(path, ed);
+    bytesSum += process(path, ed, true);
 }
 
 function connectPacketsToPaths(paths) {
@@ -116,6 +120,8 @@ function initEdges(edges, data) {
         e.outQ = []; // Исходящая из УЗЛА
         e.packets = [];
         e.deliveredTime = 0;
+        e.countPackets = 0;
+        e.workedTime = 0;
         edges[i] = e;
 
     }
@@ -128,18 +134,18 @@ function processLogicLink(from, to, size, count) {
 
     createServicePacket();
     initEdges(edges, packets.slice());
-    var serviceSize = process(shortestPath, edges);
+    var serviceSize = process(shortestPath, edges, false);
 
 
     createPackets(size, count);
     initEdges(edges, packets.slice());
-    var informSize = process(shortestPath, edges);
+    var informSize = process(shortestPath, edges, false);
 
 
     showFinishMessage(from, to, serviceSize+informSize, timeSum.reduce(function(a, b) { return a + b; }, 0));
 }
 
-function process(shortestPath, edges) {
+function process(shortestPath, edges, isDatagram) {
     var stopFlag = false;
     var controlSum = edges[0].outQ.length;
     var pack = edges[0].outQ.slice();
@@ -162,9 +168,16 @@ function process(shortestPath, edges) {
             if (e.packets.length != 0) {
                 if (e.deliveredTime <= (new Date()).getTime()) {
                     var p = e.packets.pop();
+                    intensity++;
                     if (isError(e)) {
-                        e.outQ.unshift(p);
-                        showErrorMessage(p.id)
+                        if(isDatagram){
+                            showErrorMessage(p.id, "(Packet lost)")
+                            controlSum--;
+                        }else{
+                            e.outQ.unshift(p);
+                            showErrorMessage(p.id, "")
+                        }
+
                     } else {
                         e.inQ.push(p);
                         showInQMessage(p.info, p.service,shortestPath[i], shortestPath[i+1], p.id);
@@ -189,6 +202,8 @@ function process(shortestPath, edges) {
                     e.packets.push(p);
                     e.deliveredTime = (new Date()).getTime() + extraTime;
                     showInChannelMessage(p.info, p.service, shortestPath[i+1], p.id);
+
+
                 }
             }
         }
@@ -199,7 +214,8 @@ function process(shortestPath, edges) {
     }
 
     edges[edges.length-1].inQ = [];
-    timeSum.push((new Date()).getTime() - startProcessTime);
+    var processTime = (new Date()).getTime() - startProcessTime;
+    timeSum.push(processTime);
     return getByteCount(pack)
 }
 
@@ -306,10 +322,12 @@ function showFinishPacketMessage(id, time) {
     document.getElementById("log-body").innerHTML += "<p class='green'>Packet "+ id +" has sent ("+ time +"ms)</p>"
 }
 
-function showErrorMessage(id) {
-    document.getElementById("log-body").innerHTML += "<p class='red'>Error occurred in packet "+id+"</p>"
+function showErrorMessage(id, message) {
+    document.getElementById("log-body").innerHTML += "<p class='red'>Error occurred in packet "+id+" "+message+"</p>"
 }
 
 function showFinishMessage(idFrom, idTo, byteCount, time) {
-    document.getElementById("log-body").innerHTML += "<h4 class='green'>Message of "+ byteCount +"bytes has been sent from "+ idFrom +" node to "+ idTo +" node("+ time +"ms)</h4>"
+    document.getElementById("log-body").innerHTML += "<h4 class='green'>Message of "+ byteCount +"bytes has been sent from "+ idFrom +" node to "+ idTo +" node("+ time +"ms)</h4>";
+    document.getElementById("log-body").innerHTML += "<h4 class='green'>Average intensity: "+intensity/(time/1000)+" packets/second</h4>"
+
 }

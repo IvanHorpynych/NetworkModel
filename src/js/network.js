@@ -15,7 +15,7 @@ var regionNodeId = 0;
 
 var options = {
     physics:{
-        enabled: true
+        enabled: false
     },
     interaction:{
         hover:true,
