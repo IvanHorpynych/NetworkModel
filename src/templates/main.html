@@ -21,15 +21,14 @@
     <div id="header">
         <div id="random-menu" >
             <h4>Random menu</h4>
-            <p>Weight</p>  <input id="rand-weight-from" type="number" value="50"> -  <input id="rand-weight-to"type="number" value="100"><br/>
-            <p>Error Probability</p>  <input id="rand-error-from" type="number" value="0.1"> -  <input id="rand-error-to"type="number" value="0.2"><br/>
+            <p>Error Probability</p>  From<br><input id="rand-error-from" type="number" value="0.1"> <br>To<br><input id="rand-error-to"type="number" value="0.2"><br/>
 
             <button id="generateRandom" onclick="randomGraphGeneration();">Random graph</button>
         </div>
 
         <div id="algorithm-menu">
             <h4>Shortest path menu</h4>
-            <p>From</p>  <input id="alg-from" type="number"> To  <input id="alg-to"type="number" ><br/>
+            From<br><input id="alg-from" type="number"> <br>To <br> <input id="alg-to"type="number" ><br/>
 
             <button id="startAlg" onclick="processShortestPath();">Start process</button>
         </div>
@@ -39,10 +38,8 @@
             <input type="radio" name="type" value="logic-link" checked> Logic link<br>
             <p>Size</p> <input id="message-size" type="number" value="10000"><br/>
             <p>Count</p> <input id="message-count" type="number" value="1"><br/>
-            From <input id="send-from" type="number"> To  <input id="send-to"type="number"><br/>
+            From<br> <input id="send-from" type="number"> <br>To <br> <input id="send-to"type="number"><br/>
             <button id="processSending" onclick="send();">Send</button>
-        </div>
-        <div id="log-menu">
             <button id="showLog" onclick="showLog();">Show</button>
         </div>
 
@@ -89,17 +86,16 @@
                     </td>
                 </tr>
             </table>
-            <input type="button" value="save" id="saveButton" />
-            <input type="button" value="cancel" id="cancelButton" />
+            <button id="saveButton">Save</button>
+            <button id="cancelButton">Cancel</button>
         </div>
-        <br />
         <div id="mynetwork"></div>
         <div id="info">
             <h3 id="info-title"></h3>
             <div id="info-body"></div>
         </div>
     </div>
-
+    
     <div id="footer">
 
 

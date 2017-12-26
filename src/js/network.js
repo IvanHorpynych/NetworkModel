@@ -163,13 +163,9 @@ function randomGraphGeneration() {
     newNodeInd = 0;
     newEdgeInd = 0;
     regionNodeId = 0;
-    var weightFrom = document.getElementById('rand-weight-from').value;
-    var weightTo= document.getElementById('rand-weight-to').value;
     var errorFrom= document.getElementById('rand-error-from').value;
     var errorTo= document.getElementById('rand-error-to').value;
     var randParam = {
-        weightFrom: weightFrom,
-        weightTo: weightTo,
         errorFrom: errorFrom,
         errorTo: errorTo
     };
