@@ -1,12 +1,11 @@
 
-var MIN_NODES = 10;
-var REGIONS_NUMBER = 3;
-var MIN_NODES_IN_REGION = 9;
+var MIN_NODES = 28;
+var REGIONS_NUMBER = 4;
+var MIN_NODES_IN_REGION = 7;
 var SATELLITE = 2;
-var AVERAGE_RANG = 3.5;
-var WEIGHT_ARRAY = [2,4,5,9,11,12,13,14,15,24,32];
-// var WEIGHT_ARRAY = [2,5,6,7,8,10,12,15,18,20,21,24,25];
+var AVERAGE_RANG = 4;
+var WEIGHT_ARRAY = [1, 2, 3, 4, 5, 7, 10, 12, 14, 17, 19, 21];
 
-var IS_REGIONAL = false;
+var IS_REGIONAL = true;
 
 

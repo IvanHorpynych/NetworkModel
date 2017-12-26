@@ -480,12 +480,9 @@ function showNodeInfo(params) {
     var nodeInd = params.nodes[0];
     var node = nodes[nodeInd];
 
-    document.getElementById('info-title').innerHTML = "Node info";
+    document.getElementById('info-title').innerHTML = "About node";
     var info = document.getElementById('info-body');
     info.innerHTML = "";
-    var p = document.createElement('p');
-    p.innerHTML = "ID: " + node.id;
-    info.appendChild(p);
 
     p = document.createElement('p');
     p.innerHTML = "Label: " + node.label;
@@ -497,7 +494,7 @@ function showNodeInfo(params) {
 
     node.routing.forEach(function (el) {
         p =  document.createElement('p');
-        p.innerHTML = "" + node.id + " --> " + el.to + " : " + JSON.stringify(el.path) + " min weight: " + el.weight;
+        p.innerHTML = "" + node.id + "&#8594;" + el.to + " : " + JSON.stringify(el.path) + " Minimal weight:&#8594;" + el.weight;
         info.appendChild(p);
     });
 
@@ -509,7 +506,7 @@ function showEdgeInfo(params) {
     var edgeInd = params.edges[0];
     var edge = edges[edgeInd];
 
-    document.getElementById('info-title').innerHTML = "Edge info";
+    document.getElementById('info-title').innerHTML = "About edge";
     var info = document.getElementById('info-body');
     info.innerHTML = "";
     var p = document.createElement('p');
