@@ -91,7 +91,8 @@ div.table_description {
 }
 
 #operation {
-    font-size:28px;
+    font-size:25px;
+    font-style: oblique;
 }
 #network-popUp {
     position: absolute;
@@ -144,13 +145,13 @@ body{
     background-image: url(./img/digitalnetwork.png);
 }
 .red{
-    background-color: #ff9ca1;
+    background-color: #ef1722;
 }
 .green{
-    background-color: greenyellow;
+    background-color: #3997ff;
 }
 .yellow{
-    background-color: yellow;
+    background-color: #fffdfe;
 }
 
 

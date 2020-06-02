@@ -1,6 +1,3 @@
-/**
- * Created by danastasiev on 12/10/16.
- */
 var SERVICE_PART_SIZE = 128;
 var INFORM_PART_SIZE = 1500;
 var SERVICE_PACKET = 128;
@@ -23,7 +20,7 @@ var INTENSITY_TIME = 1000;
 function send() {
     var radios = document.getElementsByName('type');
     var size =  document.getElementById('message-size').value;
-    var count =  document.getElementById('message-count').value;
+    var count =  1;
     var from =  document.getElementById('send-from').value;
     var to =  document.getElementById('send-to').value;
     document.getElementById("log-body").innerHTML = "";

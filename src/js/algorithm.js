@@ -1,6 +1,3 @@
-/**
- * Created by danastasiev on 11/29/16.
- */
 
 function processShortestPath() {
     var from = document.getElementById('alg-from').value;

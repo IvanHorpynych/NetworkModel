@@ -1,6 +1,4 @@
-/**
- * Created by danastasiev on 11/28/16.
- */
+
 var nodes = null;
 var edges = null;
 var network = null;
